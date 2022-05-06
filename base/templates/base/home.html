@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% include "navbar.html" %}
+
+
+{% block content %}
+<style>
+    .home-container{
+        display:grid;
+        grid-template-columns:1fr 3fr 1fr;
+    }
+</style>
+<div class="home-container">
+    <div>
+        <h3>Browse Topic</h3>
+        <hr>
+
+
+        <div>
+            <a href='.'>All</a>
+        </div>
+
+        {% for topic in topics %}
+        <div>
+            <a href="?q={{topic.name}}">{{ topic }}</a>
+        </div>
+
+        {% endfor %}
+    </div>
+    <div class="py-2">
+        <span class="bg-dark text-center" style="margin-left: 15%; border: none; border-radius: 10px; padding: 5px;"><a href="/create-room/" class="text-decoration-none text-light" style="border: none; border-radius: 10px;">Create Room</a></span>
+        <h5 class="h5" style="margin-left: 50px; margin-top:30px"> {{ room_count }} rooms are available  </h5>
+
+    <div class="container" style='padding: 5%;'>
+    
+    {% for room in rooms %}
+    {% if request.user == room.host %}
+    <span class="bg-info px-4 " style=" border:none; border-radius: 20px; margin-bottom: 6px;"><a href="/update-room/{{ room.id }}" class="text-start text-decoration-none text-light">Edit</a></span>
+    <span class="bg-danger px-3 " style="border:none; border-radius: 20px; margin-bottom: 6px;"><a href="/delete-room/{{ room.id }}" class="text-start text-decoration-none text-light">Delete</a></span>
+    {% else %}
+
+    {% endif %}
+    <div class="">
+        <span class="text-light h5 text-light text-start bg-secondary bordered rounded">
+            @{{room.host.username}}
+        </span>
+       
+        <h3 class="h4 text-dark text-start text-decoration-none"><a href="/rooms/{{ room.id }}" class="text-decoration-none text-success">{{ room.name }}</a></h3>
+        <small>{{ room.topic.name }}</small>
+        <hr>    
+    </div>
+    {% endfor %}
+    </div>
+
+
+    </div>
+    <div>
+        {% include "base/activity_component.html" %}
+    </div>
+</div>
+{% endblock content %}
